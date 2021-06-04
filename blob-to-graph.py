@@ -52,9 +52,12 @@ if __name__ == '__main__':
 
   while(True):
     for x in result:
-      x = x[1]
+      trace_data = x[1]
+      trace_time = x[2]
 
-      hex_encoded_bytes_from_blob = hexlify(x)
+      timestamp = 'Trace Time: ' + trace_time.strftime('%m/%d/%Y %H:%M:%S %p')
+
+      hex_encoded_bytes_from_blob = hexlify(trace_data)
       hexstring = ''.join(map(chr, hex_encoded_bytes_from_blob))
       
       hexstring_byte_array = [hexstring[i: i + 8] for i in range(0, len(hexstring), 8)]
@@ -72,6 +75,7 @@ if __name__ == '__main__':
       plt.xlabel('index')
       plt.ylabel('magnitude')
       plt.title('magnitude over index')
+      plt.text(150, -120, timestamp)
       plt.draw()
       plt.pause(1)
       plt.clf()
