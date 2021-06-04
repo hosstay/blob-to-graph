@@ -40,6 +40,19 @@ def run_query(conn, query):
     cursor.close()
     exit()
 
+def convertBlobDataToIntArray(data):
+  hex_encoded_bytes_from_blob = hexlify(data)
+  hexstring = ''.join(map(chr, hex_encoded_bytes_from_blob))
+  hexstring_byte_array = [hexstring[i: i + 8] for i in range(0, len(hexstring), 8)]
+
+  int_array = []
+  for y in hexstring_byte_array:
+    y = convert4byteHexStrToSigned32BitInt(y)
+    y = y / 1000
+    int_array.append(y)
+
+  return int_array
+
 def convert4byteHexStrToSigned32BitInt(h):
   b = bytes(h, 'utf-8')
   ba = a2b_hex(b)
@@ -57,24 +70,15 @@ if __name__ == '__main__':
 
       timestamp = 'Trace Time: ' + trace_time.strftime('%m/%d/%Y %H:%M:%S %p')
 
-      hex_encoded_bytes_from_blob = hexlify(trace_data)
-      hexstring = ''.join(map(chr, hex_encoded_bytes_from_blob))
-      
-      hexstring_byte_array = [hexstring[i: i + 8] for i in range(0, len(hexstring), 8)]
-
-      int_array = []
-      for y in hexstring_byte_array:
-        y = convert4byteHexStrToSigned32BitInt(y)
-        y = y / 1000
-        int_array.append(y)
+      int_array = convertBlobDataToIntArray(trace_data)
 
       index_array = list(range(1, len(int_array) + 1))
 
       plt.plot(index_array, int_array)
       plt.ylim(-130, -30)
-      plt.xlabel('index')
-      plt.ylabel('magnitude')
-      plt.title('magnitude over index')
+      plt.xlabel('Index')
+      plt.ylabel('Magnitude')
+      plt.title('Magnitude Over Index')
       plt.text(150, -120, timestamp)
       plt.draw()
       plt.pause(1)
