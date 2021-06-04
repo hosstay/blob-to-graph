@@ -51,11 +51,19 @@ The Test was to be completed within 4 hours. While making it I ran a timer
 and collected how long it too me to complete the various tasks
 
 Installing MySql/Python: 39 minutes (39)
+
 Importing dump file into MySql: 16 minutes (55)
+
 Getting data into Python from MySql: 27 minutes (82)
+
 Convert BLOB data to list of 32 bit signed integers: 55 minutes (137)
+
 Find and install graphing module, get each blob to print each sec: 36 minutes (173)
+
 Add timestamps, cleanup code, write more comments: 25 minutes (198)
+
 Write README: 25 minutes (223)
+
+---
 
 Time Usage (223/240)
