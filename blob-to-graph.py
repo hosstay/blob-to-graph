@@ -2,6 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 from sys import exit
 from binascii import hexlify, a2b_hex
+import matplotlib.pyplot as plt
 
 def connect():
   conn = None
@@ -49,17 +50,32 @@ if __name__ == '__main__':
 
   result = run_query(conn, 'SELECT * FROM test ORDER BY trace_id;')
 
-  hex_encoded_bytes_from_blob = hexlify(result[0][1])
-  hexstring = ''.join(map(chr, hex_encoded_bytes_from_blob))
-  
-  hexstring_byte_array = [hexstring[i: i + 8] for i in range(0, len(hexstring), 8)]
+  while(True):
+    for x in result:
+      x = x[1]
 
-  int_array = []
-  for y in hexstring_byte_array:
-    y = convert4byteHexStrToSigned32BitInt(y)
-    y = y / 1000
-    int_array.append(y)
+      hex_encoded_bytes_from_blob = hexlify(x)
+      hexstring = ''.join(map(chr, hex_encoded_bytes_from_blob))
+      
+      hexstring_byte_array = [hexstring[i: i + 8] for i in range(0, len(hexstring), 8)]
 
-  print(int_array)
+      int_array = []
+      for y in hexstring_byte_array:
+        y = convert4byteHexStrToSigned32BitInt(y)
+        y = y / 1000
+        int_array.append(y)
+
+      index_array = list(range(1, len(int_array) + 1))
+
+      plt.plot(index_array, int_array)
+      plt.ylim(-130, -30)
+      plt.xlabel('index')
+      plt.ylabel('magnitude')
+      plt.title('magnitude over index')
+      plt.draw()
+      plt.pause(1)
+      plt.clf()
+
+    print('End of firm loop, starting again')
 
   disconnect(conn)
