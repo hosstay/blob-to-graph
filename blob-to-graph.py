@@ -41,8 +41,13 @@ def run_query(conn, query):
     exit()
 
 def convertBlobDataToIntArray(data):
+  # hex encode blob data so it looks like proper hex
   hex_encoded_bytes_from_blob = hexlify(data)
+
+  # convert hex byte string into string
   hexstring = ''.join(map(chr, hex_encoded_bytes_from_blob))
+
+  # make an array of 4 byte hex strings from full hex string
   hexstring_byte_array = [hexstring[i: i + 8] for i in range(0, len(hexstring), 8)]
 
   int_array = []
@@ -86,4 +91,5 @@ if __name__ == '__main__':
 
     print('End of firm loop, starting again')
 
+  # never gets called because program is intentionally an infinite loop
   disconnect(conn)
